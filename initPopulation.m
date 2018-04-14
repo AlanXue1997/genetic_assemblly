@@ -6,5 +6,4 @@ population = zeros(m,col);
 for i=1:m
     population(i,:) = getPeople(graph);
 end
-end
 
