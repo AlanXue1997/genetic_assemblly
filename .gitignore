@@ -1,0 +1,11 @@
+# Windows default autosave extension
+*.asv
+*.txt
+*.docx
+*.xlsx
+
+# Data folder
+CASIA_data/*
+DGD_database/*
+GEI_FromCASIA/*
+GEI_FromDGD/*
