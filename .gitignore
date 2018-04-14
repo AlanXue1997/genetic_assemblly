@@ -3,9 +3,5 @@
 *.txt
 *.docx
 *.xlsx
+*.tmp
 
-# Data folder
-CASIA_data/*
-DGD_database/*
-GEI_FromCASIA/*
-GEI_FromDGD/*
