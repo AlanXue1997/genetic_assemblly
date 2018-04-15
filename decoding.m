@@ -18,10 +18,11 @@ end
 
 decoded_population = zeros(1,length(time)+n+1);
 s = 0;
-k = 1;
+k = 2;
 for i=1:length(time)
     s = s + time(i);
     decoded_population(k) = time(i);
+    k = k + 1;
     if s>=a
         s = 0;
         k = k + 1;
