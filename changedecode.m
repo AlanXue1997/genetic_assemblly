@@ -23,14 +23,13 @@ while 1
     for i=1:2
         if isTopology(population(i,:), graph) == 1
             break;
-        else
-            temp = population(2,a:b);
-            population(2,a:b) = population(1,a:b);
-            population(1,a:b) = temp;
         end
     end
+    temp = population(2,a:b);
+    population(2,a:b) = population(1,a:b);
+    population(1,a:b) = temp;
     disp(j);
     j=j+1;
 end
-change = decode;
+change = population;
 end
