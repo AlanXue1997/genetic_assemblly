@@ -2,16 +2,8 @@ function [ change ] = changedecode( population , graph )
 len = size(population,2);
 j=1;
 while 1
-    a=0;
-    while a == 0
-        a = rand();
-        a = int8(a*len);
-    end
-    b=0;
-    while b == 0
-        b = rand();
-        b = int8(b*len);
-    end
+    a = floor(len*rand())+1;
+    b = floor(len*rand())+1;
     if a>b
         temp = b;
         b = a;
@@ -20,14 +12,12 @@ while 1
     temp = population(2,a:b);
     population(2,a:b) = population(1,a:b);
     population(1,a:b) = temp;
-    for i=1:2
-        if isTopology(population(i,:), graph) == 1
-            break;
-        end
+    if (isTopology(population(1,:), graph) == 1) && (isTopology(population(2,:), graph) == 1)
+        break;
     end
-    temp = population(2,a:b);
-    population(2,a:b) = population(1,a:b);
-    population(1,a:b) = temp;
+%     temp = population(2,a:b);
+%     population(2,a:b) = population(1,a:b);
+%     population(1,a:b) = temp;
     disp(j);
     j=j+1;
 end

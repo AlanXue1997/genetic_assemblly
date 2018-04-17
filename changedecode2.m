@@ -6,14 +6,12 @@ while 1
     temp = population(2,i+1:len);
     population(2,i+1:len) = population(1,i+1:len);
     population(1,i+1:len) = temp;
-    for j=1:2
-        if isTopology(population(j,:), graph) == 1
-            break;
-        end
+    if (isTopology(population(1,:), graph) == 1) && (isTopology(population(2,:), graph) == 1)
+        break;
     end
-    temp = population(2,j+1:len);
-    population(2,j+1:len) = population(1,j+1:len);
-    population(1,j+1:len) = temp;
+%     temp = population(2,i+1:len);
+%     population(2,i+1:len) = population(1,i+1:len);
+%     population(1,i+1:len) = temp;
     
     disp(k);
     k=k+1;
