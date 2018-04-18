@@ -2,16 +2,17 @@ clear,clc;
 
 graph = getDAG('.\作业优先关系矩阵.xlsx');
 
-m = 6;
+m = 100;
+dividesize = 11;
 population = initPopulation(graph,m);
 msd = zeros(1,m);
 for i=1:m
-    p = decoding(population(i,:),10);
+    p = decoding(population(i,:),dividesize);
     msd(1,i) = getMSD(p);
 end
 sortposition = sortOrder(msd);
 
-iteration_count = 100;
+iteration_count = 20;
 k = 1;   %每个k/m对应被选入新种群的概率
 count = 1;  %记录换代的次数
 flag=1;  %记录newpopulation中位置
@@ -38,7 +39,7 @@ while count <= iteration_count
     
     population = newpopulation;
     for i=1:m
-        p = decoding(newpopulation(i,:),10);
+        p = decoding(newpopulation(i,:),dividesize);
         msd(1,i) = getMSD(p);
     end
     sortposition = sortOrder(msd);

@@ -10,7 +10,7 @@ while sum(sum(graph)) ~= 0
     a = q(1,1);
     if lenq>1
         for i=2:lenq 
-            if rem(int8(lenq*rand()),n)==0
+            if rem(floor(lenq*rand())+1,n)==0
                 a = q(1,i);
             end
         end
@@ -27,7 +27,7 @@ while sum(visited) ~= 0
     a = p(1,1);
     if lenp>1
         for i=2:lenp
-            if rem(int8(lenp*rand()),n)==0
+            if rem(floor(lenp*rand())+1,n)==0
                 a = p(1,i);
             end
         end
