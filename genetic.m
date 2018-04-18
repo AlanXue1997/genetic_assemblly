@@ -2,22 +2,58 @@ clear,clc;
 
 graph = getDAG('.\作业优先关系矩阵.xlsx');
 
-%m = 2;
-%population = initPopulation(graph,m);
-%disp(population);
-% 
-% p = decoding(population(1,:),3);
-% disp(getMSD(p));
-% 
-% for i=1:m
-%     disp(isTopology(population(i,:),graph));
-% end
-population(1,:) = [1 2 6 7 8 9 10 11 17 18 19 20 12 13 14 3 4 5 15 16 21 22 23 24 25];
-population(2,:) = [1 2 6 7 8 9 10 20 12 13 11 17 16 21 22 18 19 14 3 4 5 15 23 24 25];
+m = 6;
+population = initPopulation(graph,m);
+msd = zeros(1,m);
+for i=1:m
+    p = decoding(population(i,:),10);
+    msd(1,i) = getMSD(p);
+end
+sortposition = sortOrder(msd);
 
-%decode = before_after(population,graph);
-decode = changedecode(population,graph);
-disp(population(1,:));
-disp(population(2,:));
-% disp(decode(1,:));
-% disp(decode(2,:));
+iteration_count = 100;
+k = 1;   %每个k/m对应被选入新种群的概率
+count = 1;  %记录换代的次数
+flag=1;  %记录newpopulation中位置
+newpopulation = zeros(m,size(population,2));
+
+minmsd = zeros(1,iteration_count);
+maxmsd = zeros(1,iteration_count);
+summsd = zeros(1,iteration_count);
+while count <= iteration_count
+    while k <= m
+        if floor(rand()*m)<k
+            newpopulation(flag,:) = population(sortposition(1,k),:);
+            flag = flag+1;
+        end
+        k = k+1;
+    end
+
+    %新种群的数量小于m从新种群中选一个个体进行变异，加入新种群中，最终使新种群的数量与原种群相同
+    while flag<=m
+       j = floor(rand()*(flag-1))+1;
+       newpopulation(flag,:) = before_after(newpopulation(j,:),graph);
+       flag=flag+1;
+    end
+    
+    population = newpopulation;
+    for i=1:m
+        p = decoding(newpopulation(i,:),10);
+        msd(1,i) = getMSD(p);
+    end
+    sortposition = sortOrder(msd);
+    minmsd(1,count) = min(msd);
+    maxmsd(1,count) = max(msd);
+    summsd(1,count) = sum(msd);
+    disp(count);
+    count=count+1;
+    k = 1;
+    flag = 1;
+end
+
+figure(1);
+plot(minmsd);
+figure(2);
+plot(maxmsd);
+figure(3);
+plot(summsd);

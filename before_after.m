@@ -31,10 +31,6 @@ elseif position2 > position
     decode(1,position:position2-1) = decode(1,position+1:position2);
     decode(1,position2) = temp;
 end
-disp(position);
-disp(left);
-disp(right);
-disp(position2);
 
 change = decode;
 end
