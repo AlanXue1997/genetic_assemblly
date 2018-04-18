@@ -31,10 +31,12 @@ while count <= iteration_count
     end
 
     %新种群的数量小于m从新种群中选一个个体进行变异，加入新种群中，最终使新种群的数量与原种群相同
+    a = 1;     %后面始终从最开始得到的几种分配方式中随机一种来变异
     while flag<=m
-       j = floor(rand()*(flag-1))+1;
+       j = floor(rand()*(flag-a))+1;
        newpopulation(flag,:) = before_after(newpopulation(j,:),graph);
        flag=flag+1;
+       a=a+1;
     end
     
     population = newpopulation;
@@ -52,6 +54,7 @@ while count <= iteration_count
     flag = 1;
 end
 
+minmsd = minmsd - min(minmsd);
 figure(1);
 plot(minmsd);
 figure(2);
