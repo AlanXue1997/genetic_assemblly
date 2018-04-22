@@ -1,4 +1,4 @@
-function [cost,CMatrix,worker_task] = minworkerprice(decode)
+function [cost,CMatrix,worker_task] = minworkerprice(decode,person)
 workerprice = xlsread('.\工人任务成本.xlsx');
 q = find(decode==0);
 i = 1;
@@ -10,10 +10,13 @@ while i+1<=size(q,2)
     k = q(i+1)-q(i);
     m = m+k-1;
     p = m-1;
-    newworkerprice(i,:) = sum(workerprice(n:p,:));
+    for l=n:p
+        newworkerprice(i,:) = newworkerprice(i,:) + workerprice(person(1,l),:);
+    end
     i = i+1;
 end
 
+disp(newworkerprice);
 [cost,CMatrix] = Assignment(newworkerprice,1);
 worker_task = zeros(2,11);
 worker_task(1,:) = [1:11];
