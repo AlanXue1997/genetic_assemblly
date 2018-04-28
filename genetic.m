@@ -22,6 +22,7 @@ newpopulation = zeros(m,size(population,2));
 minmsd = zeros(1,iteration_count);
 maxmsd = zeros(1,iteration_count);
 summsd = zeros(1,iteration_count);
+maxworktime = zeros(1,iteration_count);
 while count <= iteration_count
     while k <= m
         if floor(rand()*m)<k
@@ -41,14 +42,19 @@ while count <= iteration_count
     end
     
     population = newpopulation;
+    max_worktime = 0;
     for i=1:m
         p = decoding(newpopulation(i,:),dividesize);
+        if  Max_time(p)>max_worktime  
+            max_worktime = Max_time(p);
+        end
         msd(1,i) = getMSD(p);
     end
     sortposition = sortOrder(msd);
     minmsd(1,count) = min(msd);
     maxmsd(1,count) = max(msd);
     summsd(1,count) = sum(msd);
+    maxworktime(1,count) = max_worktime;
     disp(count);
     count=count+1;
     k = 1;
@@ -62,6 +68,8 @@ figure(2);
 plot(maxmsd);
 figure(3);
 plot(summsd);
+figure(4);
+plot(maxworktime);
 
 min_p = decoding(newpopulation(sortposition(m),:),dividesize);
 person = newpopulation(sortposition(m),:);
