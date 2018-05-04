@@ -50,6 +50,7 @@ max_rank = max(intermediate_chromosome(:,M + V + 1));
 % Start adding each front based on rank and crowing distance until the
 % whole population is filled.
 previous_index = 0;
+f=[];
 for i = 1 : max_rank
     % Get the index for current rank i.e the last the last element in the
     % sorted_chromosome with rank i. 

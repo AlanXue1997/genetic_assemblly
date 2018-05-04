@@ -38,22 +38,28 @@ function f = evaluate_objective(x, M, V)
 %
 % Number of objective is two, while it can have arbirtarly many decision
 % variables within the range -5 and 5. Common number of variables is 3.
-f = [];
-% Objective function one
-sum = 0;
-for i = 1 : V - 1
-    sum = sum - 10*exp(-0.2*sqrt((x(i))^2 + (x(i + 1))^2));
-end
-% Decision variables are used to form the objective function.
-f(1) = sum;
 
-% Objective function two
-sum = 0;
-for i = 1 : V
-    sum = sum + (abs(x(i))^0.8 + 5*(sin(x(i)))^3);
-end
-% Decision variables are used to form the objective function.
-f(2) = sum;
+f = [];
+% % Objective function one
+% sum = 0;
+% for i = 1 : V - 1
+%     sum = sum - 10*exp(-0.2*sqrt((x(i))^2 + (x(i + 1))^2));
+% end
+% % Decision variables are used to form the objective function.
+% f(1) = sum;
+% 
+% % Objective function two
+% sum = 0;
+% for i = 1 : V
+%     sum = sum + (abs(x(i))^0.8 + 5*(sin(x(i)))^3);
+% end
+% % Decision variables are used to form the objective function.
+% f(2) = sum;
+x = x(1:V);
+p = getArrangement(x, V);
+f(1) = min_changetime(p);
+f(2) = min_materiel(p);
+f(3) = calcEntropy(x, V);
 
 %% Check for error
 if length(f) ~= M

@@ -45,12 +45,12 @@ number_of_decision_variables = input(g);
 clc
 for i = 1 : number_of_decision_variables
     clc
-    g = sprintf('\nInput the minimum value for decision variable %d : ', i);
+    %g = sprintf('\nInput the minimum value for decision variable %d : ', i);
     % Obtain the minimum possible value for each decision variable
-    min_range_of_decesion_variable(i) = input(g);
-    g = sprintf('\nInput the maximum value for decision variable %d : ', i);
+    min_range_of_decesion_variable(i) = 0;
+    %g = sprintf('\nInput the maximum value for decision variable %d : ', i);
     % Obtain the maximum possible value for each decision variable
-    max_range_of_decesion_variable(i) = input(g);
+    max_range_of_decesion_variable(i) = 1;
     clc
 end
 g = sprintf('\n Now edit the function named "evaluate_objective" appropriately to match your needs.\n Make sure that the number of objective functions and decision variables match your numerical input. \n Make each objective function as a corresponding array element. \n After editing do not forget to save. \n Press "c" and enter to continue... ');
