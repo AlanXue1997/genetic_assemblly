@@ -42,10 +42,10 @@ while count <= iteration_count
     end
     
     population = newpopulation;
-    max_worktime = 0;
+    max_worktime = inf;
     for i=1:m
         p = decoding(newpopulation(i,:),dividesize);
-        if  Max_time(p)>max_worktime  
+        if  Max_time(p)<max_worktime  
             max_worktime = Max_time(p);
         end
         msd(1,i) = getMSD(p);

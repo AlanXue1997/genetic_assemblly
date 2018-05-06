@@ -1,6 +1,5 @@
 function [ people ] = getPeople( graph )
 n=1;  %表示找到的入度为零，出度不为零的人的个数
-%a=0;  %表示上一个找到的人的对应矩阵的位置
 col = size(graph,2);
 people = zeros(1,col);
 visited = [1:col];
