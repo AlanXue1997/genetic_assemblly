@@ -1,7 +1,6 @@
-function [ decoded_population ] = decoding( person,n )
+function [ decoded_population ] = decoding( person,n,time_table )
 %DECODE Summary of this function goes here
 %   Detailed explanation goes here
-time_table = xlsread('.\产品工时表')';
     
 time = time_table(person);
 

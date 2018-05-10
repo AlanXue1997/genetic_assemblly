@@ -16,10 +16,11 @@ global V M xl xu etac etam p pop_size pm
 %    constraint violation in the column (V+M+1), Rank in (V+M+2), Distance in (V+M+3).
 %% code starts
 M=2;
-p=input('Test problem index  :');
-pop_size=2000;           % Population size
+% p=input('Test problem index  :');
+p=15;
+pop_size=1000;           % Population size
 no_runs=1;              % Number of runs
-gen_max=100;            % MAx number of generations - stopping criteria
+gen_max=500;            % MAx number of generations - stopping criteria
 fname='test_case';      % Objective function and constraint evaluation
 
 if p==13,  % OSY
@@ -54,7 +55,7 @@ elseif p==15
     xl = zeros(1,V);
     xu = ones(1,V);
     etac = 20;
-    etam = 100;
+    etam = 20;
 end
 pm=1/V;                     % Mutation Probability
 
@@ -94,23 +95,39 @@ population_inter=[population(:,1:V+M+1) ; child_offspring(:,1:V+M+1)];
 %% Replacement - N
 new_pop=replacement(population_inter_sorted, front);
 population=new_pop;
+maxchangetime(gen_count) = min(new_pop(:,V+1));
+maxmateriel(gen_count) = min(new_pop(:,V+2));
 end
 new_pop=sortrows(new_pop,V+1);
 paretoset(run).trial=new_pop(:,1:V+M+1);
 Q = [Q; paretoset(run).trial];                      % Combining Pareto solutions obtained in each run
 end
-
 %% Result and Pareto plot
-if run==1
-plot(new_pop(:,V+1),new_pop(:,V+2),'*')
+if run==1 
+    figure(1);
+    plot(maxchangetime);
+    xlabel('迭代次数');
+    ylabel('切换时间');
+    title('迭代次数-切换时间');
+
+    figure(2);
+    plot(maxmateriel);
+    xlabel('迭代次数');
+    ylabel('产品变化值');
+    title('迭代次数-产品变化值');
+    
+    figure(3)
+    plot(new_pop(:,V+1),new_pop(:,V+2),'*');
+    xlabel('切换时间');
+    ylabel('产品变化值');
+    title('切换时间-产品变化值');
 else                                        
 [pareto_filter front]=NDS_CD_cons(Q);               % Applying non domination sorting on the combined Pareto solution set
 rank1_index=find(pareto_filter(:,V+M+2)==1);        % Filtering the best solutions of rank 1 Pareto
 pareto_rank1=pareto_filter(rank1_index,1:V+M)
 plot(pareto_rank1(:,V+1),pareto_rank1(:,V+2),'*')   % Final Pareto plot
 end
-xlabel('objective function 1')
-ylabel('objective function 2')
+
 if p==1
     title(' 1 - Test case 1')
 elseif p==2
@@ -139,10 +156,29 @@ elseif p==13
     title(' 13 - OSY')
 elseif p==14
     title(' 14 - CONSTR')
-elseif p==15
-    title(' 15 - result');
+% elseif p==15
+%     title('切换时间-产品变化值');
 end
 
-for i=1:100
+for i=1:pop_size
     ans(i,:) = getArrangement(new_pop(i,1:V),V);
 end
+count = 1;
+i=1;
+result1(count,:) = ans(i,:);
+while i<=pop_size
+    if sum(result1(count,:)==ans(i,:)) ~= 14
+       count=count+1;
+       result1(count,:) =  ans(i,:);
+    end
+    i = i+1;
+end
+disp('ABC优化序列：');
+[x,y] = size(result1);
+syms A B C;
+for i=1:x
+    result2(i,1:y) = [A];
+end
+result2(find(result1==3))=[C];
+result2(find(result1==2))=[B];
+disp(result2);

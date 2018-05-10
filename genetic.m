@@ -1,19 +1,20 @@
 clear,clc;
 
 graph = getDAG('.\作业优先关系矩阵.xlsx');
+time_table = xlsread('.\产品工时表')';
 
-m = 100;
+m = 1000;
 dividesize = 11;
 population = initPopulation(graph,m);
 msd = zeros(1,m);
 for i=1:m
-    p = decoding(population(i,:),dividesize);
+    p = decoding(population(i,:),dividesize,time_table);
     msd(1,i) = getMSD(p);
 end
 
 sortposition = sortOrder(msd);
 
-iteration_count = 20;
+iteration_count = 200;
 k = 1;   %每个k/m对应被选入新种群的概率
 count = 1;  %记录换代的次数
 flag=1;  %记录newpopulation中位置
@@ -44,7 +45,7 @@ while count <= iteration_count
     population = newpopulation;
     max_worktime = inf;
     for i=1:m
-        p = decoding(newpopulation(i,:),dividesize);
+        p = decoding(newpopulation(i,:),dividesize,time_table);
         if  Max_time(p)<max_worktime  
             max_worktime = Max_time(p);
         end
@@ -62,21 +63,48 @@ while count <= iteration_count
 end
 
 minmsd = minmsd - min(minmsd);
+
 figure(1);
 plot(minmsd);
-figure(2);
-plot(maxmsd);
-figure(3);
-plot(summsd);
-figure(4);
-plot(maxworktime);
+title('每次迭代最小均方差的变化');
+xlabel('迭代次数');
+ylabel('最小均方差')
 
-min_p = decoding(newpopulation(sortposition(m),:),dividesize);
+% figure(2);
+% plot(maxmsd);
+figure(2);
+plot(summsd);
+title('每次迭代均方差之和的变化');
+xlabel('迭代次数')
+ylabel('均方差之和')
+
+figure(3);
+plot(maxworktime);
+title('每次迭代工作站最大工作时间');
+xlabel('迭代次数')
+ylabel('工作站最大工作时间')
+
+min_p = decoding(newpopulation(sortposition(m),:),dividesize,time_table);
+min_pop = min_p;
+for i=1:size(min_p,2)
+    if min_p(i) ~= 0
+        q = find(time_table==min_p(i));
+        if size(q,2)>0
+            time_table(q(1)) = -1;
+            min_pop(i) = q(1);
+        end
+    end
+end
 person = newpopulation(sortposition(m),:);
 
-disp(min_p);
+disp('工作站分配方式：');
+disp(min_pop);
+disp('工序序列：');
 disp(person);
-[cost,CMatrix,worker_task] = minworkerprice(min_p,person);
-disp(CMatrix);
+[cost,CMatrix,worker_task] = minworkerprice(min_pop,person);
+disp('工作站与工人分配：');
 disp(worker_task);
+disp('最小工人成本：');
 disp(cost);
+disp('所有迭代中工作站最大工作时间的最小时间：');
+disp(maxworktime(1,iteration_count));

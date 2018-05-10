@@ -15,5 +15,14 @@ function [summateriel] = min_materiel(p)
         materiel(2,i) = b;
         materiel(3,i) = c;
     end
+    for i=1:14
+        materiel(1,i) = materiel(1,i) / i;
+        materiel(2,i) = materiel(2,i) / i;
+        materiel(3,i) = materiel(3,i) / i;
+    end
+    materiel(1,:) = materiel(1,:) - 6/14;
+    materiel(2,:) = materiel(2,:) - 5/14;
+    materiel(3,:) = materiel(3,:) - 3/14;
+    materiel = abs(materiel);
     summateriel = sum(sum(materiel));
 end

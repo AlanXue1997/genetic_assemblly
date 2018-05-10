@@ -16,7 +16,6 @@ while i+1<=size(q,2)
     i = i+1;
 end
 
-disp(newworkerprice);
 [cost,CMatrix] = Assignment(newworkerprice,1);
 worker_task = zeros(2,11);
 worker_task(1,:) = [1:11];
